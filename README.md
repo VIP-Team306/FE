@@ -1,5 +1,10 @@
 # Welcome to your Lovable project
 
+for run this project local -
+1. npm instal
+2. npm run dev
+
+
 ## Project info
 
 **URL**: https://lovable.dev/projects/127c1c80-027e-47e4-b9bb-81a6a2a375b4
@@ -67,3 +72,4 @@ Simply open [Lovable](https://lovable.dev/projects/127c1c80-027e-47e4-b9bb-81a6a
 ## I want to use a custom domain - is that possible?
 
 We don't support custom domains (yet). If you want to deploy your project under your own domain then we recommend using Netlify. Visit our docs for more details: [Custom domains](https://docs.lovable.dev/tips-tricks/custom-domain/)
+
