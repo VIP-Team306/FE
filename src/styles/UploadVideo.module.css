@@ -1,0 +1,120 @@
+.uploadContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #f8f9fc;
+  }
+  
+  .uploadBox {
+    width: 400px;
+    height: 200px;
+    border: 2px dashed #007bff;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  
+  .uploadButton {
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    border: none;
+    transition: background 0.3s;
+    background-color: #007bff;
+    color: white;
+  }
+  
+  .uploadButton:hover {
+    background-color: #0056b3;
+  }
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #f8f9fc;
+  }
+  
+  .title {
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 8px;
+  }
+  
+  .subtitle {
+    font-size: 16px;
+    color: #555;
+    text-align: center;
+    margin-bottom: 24px;
+  }
+  
+  .uploadBox {
+    width: 400px;
+    height: 200px;
+    border: 2px dashed #007bff;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  
+  .uploadBox:hover {
+    background: rgba(0, 123, 255, 0.1);
+  }
+  
+  .uploadIcon {
+    font-size: 32px;
+    color: #007bff;
+    margin-bottom: 8px;
+  }
+  
+  .uploadText {
+    font-size: 14px;
+    color: #555;
+  }
+  
+  .buttonContainer {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+  }
+  
+  .uploadButton, .cancelButton {
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    border: none;
+    transition: background 0.3s;
+  }
+  
+  .uploadButton {
+    background-color: #007bff;
+    color: white;
+  }
+  
+  .uploadButton:hover {
+    background-color: #0056b3;
+  }
+  
+  .cancelButton {
+    background-color: #ccc;
+    color: black;
+  }
+  
+  .cancelButton:hover {
+    background-color: #999;
+  }
