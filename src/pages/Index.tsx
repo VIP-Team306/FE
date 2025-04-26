@@ -2,31 +2,34 @@ import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import VideoUploader from "@/components/VideoUploader";
 import ResultDisplay from "@/components/ResultDisplay";
-import { 
-  ViolenceDetectionResult, 
+import {
+  ViolenceDetectionResult,
   DetectionStatus,
-  MockViolenceDetectionService
+  MockViolenceDetectionService,
 } from "@/services/MockViolenceDetectionService"; // Correct import
 import { useToast } from "@/components/ui/use-toast";
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState("upload");
-  const [selectedVideo, setSelectedVideo] = useState<File | null>(null);
-  const [detectionStatus, setDetectionStatus] = useState<DetectionStatus>(DetectionStatus.IDLE);
-  const [detectionResult, setDetectionResult] = useState<ViolenceDetectionResult | null>(null);
+  const [selectedVideos, setSelectedVideos] = useState<File[] | null>(null);
+  const [detectionStatus, setDetectionStatus] = useState<DetectionStatus>(
+    DetectionStatus.IDLE
+  );
+  const [detectionResult, setDetectionResult] =
+    useState<ViolenceDetectionResult | null>(null);
   const { toast } = useToast();
 
-  const handleVideoSelected = (file: File) => {
-    setSelectedVideo(file);
+  const handleVideoSelected = (file: File[]) => {
+    setSelectedVideos(file);
     setDetectionResult(null);
   };
 
   const handleCheckVideo = async () => {
-    if (!selectedVideo) {
+    if (!selectedVideos) {
       toast({
         variant: "destructive",
         title: "לא נבחר סרטון",
-        description: "אנא בחר סרטון לבדיקה"
+        description: "אנא בחר סרטון לבדיקה",
       });
       return;
     }
@@ -35,16 +38,18 @@ const Index = () => {
       setDetectionStatus(DetectionStatus.UPLOADING);
       toast({
         title: "מעלה סרטון",
-        description: "מתחיל בתהליך העלאת הסרטון לשרת"
+        description: "מתחיל בתהליך העלאת הסרטון לשרת",
       });
 
       setDetectionStatus(DetectionStatus.DETECTING);
       toast({
         title: "בדיקת סרטון",
-        description: "מערכת הבינה המלאכותית מנתחת את תוכן הסרטון"
+        description: "מערכת הבינה המלאכותית מנתחת את תוכן הסרטון",
       });
 
-      const result = await MockViolenceDetectionService.detectViolence(selectedVideo);
+      const result = await MockViolenceDetectionService.detectViolence(
+        selectedVideos
+      );
 
       setDetectionResult(result);
       setDetectionStatus(DetectionStatus.COMPLETED);
@@ -53,7 +58,7 @@ const Index = () => {
       toast({
         variant: result.isViolent ? "destructive" : "default",
         title: "הבדיקה הושלמה",
-        description: result.message
+        description: result.message,
       });
     } catch (error) {
       console.error("Error during violence detection:", error);
@@ -62,20 +67,20 @@ const Index = () => {
       toast({
         variant: "destructive",
         title: "שגיאה בתהליך הבדיקה",
-        description: "אירעה שגיאה בעת בדיקת הסרטון, אנא נסה שנית"
+        description: "אירעה שגיאה בעת בדיקת הסרטון, אנא נסה שנית",
       });
     }
   };
 
   const handleReset = () => {
-    setSelectedVideo(null);
+    setSelectedVideos(null);
     setDetectionResult(null);
     setDetectionStatus(DetectionStatus.IDLE);
     setActiveTab("upload");
   };
 
-  const isProcessing = 
-    detectionStatus === DetectionStatus.UPLOADING || 
+  const isProcessing =
+    detectionStatus === DetectionStatus.UPLOADING ||
     detectionStatus === DetectionStatus.DETECTING;
 
   return (
@@ -83,8 +88,12 @@ const Index = () => {
       <div className="max-w-5xl mx-auto bg-white rounded-lg shadow-sm p-8">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
           <div>
-            <h1 className="text-3xl font-bold mb-2">ברוכים הבאים למערכת לבדיקת אלימות בסרטונים</h1>
-            <p className="text-gray-600">יחד נוריד את שיעור האלימות במרחב הציבורי</p>
+            <h1 className="text-3xl font-bold mb-2">
+              ברוכים הבאים למערכת לבדיקת אלימות בסרטונים
+            </h1>
+            <p className="text-gray-600">
+              יחד נוריד את שיעור האלימות במרחב הציבורי
+            </p>
           </div>
           <div className="mt-4 md:mt-0">
             <h2 className="text-2xl font-bold">VIP</h2>
@@ -94,29 +103,35 @@ const Index = () => {
         <div className="w-full">
           <Tabs value={activeTab} onValueChange={setActiveTab} className="mb-8">
             <TabsList className="grid grid-cols-2 mb-8">
-              <TabsTrigger value="upload" className={activeTab === "upload" ? "tab-active" : ""}>
+              <TabsTrigger
+                value="upload"
+                className={activeTab === "upload" ? "tab-active" : ""}
+              >
                 העלאת סרטונים לבדיקה
               </TabsTrigger>
-              <TabsTrigger value="results" className={activeTab === "results" ? "tab-active" : ""}>
+              <TabsTrigger
+                value="results"
+                className={activeTab === "results" ? "tab-active" : ""}
+              >
                 תוצאות בדיקה
               </TabsTrigger>
             </TabsList>
-            
+
             <TabsContent value="upload">
-              <VideoUploader 
-                onVideoSelected={handleVideoSelected} 
-                isProcessing={isProcessing} 
+              <VideoUploader
+                onVideoSelected={handleVideoSelected}
+                isProcessing={isProcessing}
               />
-              
+
               <div className="flex justify-center mt-8 gap-4">
                 <button
                   className="px-5 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                   onClick={handleCheckVideo}
-                  disabled={!selectedVideo || isProcessing}
+                  disabled={!selectedVideos || isProcessing}
                 >
                   בדיקת הסרטון
                 </button>
-                
+
                 <button
                   className="px-5 py-2 bg-white text-gray-800 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors"
                   onClick={handleReset}
@@ -126,11 +141,10 @@ const Index = () => {
                 </button>
               </div>
             </TabsContent>
-            
+
             <TabsContent value="results">
-              <ResultDisplay 
-                videoFile={selectedVideo}
-                result={detectionResult} 
+              <ResultDisplay
+                result={detectionResult}
                 isLoading={isProcessing}
                 onReset={handleReset}
               />

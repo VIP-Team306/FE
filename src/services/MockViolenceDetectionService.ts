@@ -14,7 +14,7 @@ export enum DetectionStatus {
   }
 
 export const MockViolenceDetectionService = {
-  async detectViolence(videoFile: File): Promise<ViolenceDetectionResult> {
+  async detectViolence(videoFiles: File[]): Promise<ViolenceDetectionResult> {
     const processingTime = 2000 + Math.random() * 2000;
 
     return new Promise((resolve) => {
