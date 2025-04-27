@@ -164,7 +164,7 @@ const VideoUploader = ({
             <>
               {!isProcessing && (
                 <button
-                  className="absolute top-2 right-2 p-1 bg-gray-800 bg-opacity-60 rounded-full text-white z-10"
+                  className="absolute mt-2 right-2 p-1 bg-gray-800 bg-opacity-60 rounded-full text-white z-10"
                   onClick={removeSelectedVideo}
                 >
                   <X className="h-5 w-5" />
@@ -186,6 +186,7 @@ const VideoUploader = ({
                   {(selectedVideos[index]?.size / (1024 * 1024)).toFixed(2)} MB
                 </p>
               </div>
+              <hr />
             </>
           ))}
         </div>
