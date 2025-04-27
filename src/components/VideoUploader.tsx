@@ -7,6 +7,9 @@ import { MockViolenceDetectionService } from "@/services/MockViolenceDetectionSe
 interface VideoUploaderProps {
   onVideoSelected: (files: File[]) => void;
   isProcessing: boolean;
+  selectedVideos: File[];
+  previewUrls: string[] | null;
+  setPreviewUrls: (value: string[] | null) => void;
 }
 
 const MAX_FILE_SIZE = 1024 * 1024 * 1024; // 1GB
@@ -20,10 +23,12 @@ const ACCEPTED_VIDEO_TYPES = [
 const VideoUploader = ({
   onVideoSelected,
   isProcessing,
+  previewUrls,
+  selectedVideos,
+  setPreviewUrls,
 }: VideoUploaderProps) => {
   const [dragActive, setDragActive] = useState(false);
-  const [selectedVideos, setSelectedVideos] = useState<File[] | null>(null);
-  const [previewUrls, setPreviewUrls] = useState<string[] | null>(null);
+
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
 
@@ -62,7 +67,6 @@ const VideoUploader = ({
       if (!validateFile(file)) return;
     });
 
-    setSelectedVideos(files);
     onVideoSelected(files);
 
     const videoUrls = files.map((file) => URL.createObjectURL(file));
@@ -94,7 +98,7 @@ const VideoUploader = ({
     const newPreviewUrls = [...previewUrls];
     newSelectedVideos.splice(videoIndex, 1);
     newPreviewUrls.splice(videoIndex, 1);
-    setSelectedVideos(newSelectedVideos);
+    onVideoSelected(newSelectedVideos);
     setPreviewUrls(newPreviewUrls);
     if (fileInputRef.current && !selectedVideos.length)
       fileInputRef.current.value = "";

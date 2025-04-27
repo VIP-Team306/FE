@@ -12,6 +12,7 @@ import { useToast } from "@/components/ui/use-toast";
 const Index = () => {
   const [activeTab, setActiveTab] = useState("upload");
   const [selectedVideos, setSelectedVideos] = useState<File[] | null>(null);
+  const [previewUrls, setPreviewUrls] = useState<string[] | null>(null);
   const [detectionStatus, setDetectionStatus] = useState<DetectionStatus>(
     DetectionStatus.IDLE
   );
@@ -73,6 +74,7 @@ const Index = () => {
   };
 
   const handleReset = () => {
+    setPreviewUrls(null);
     setSelectedVideos(null);
     setDetectionResult(null);
     setDetectionStatus(DetectionStatus.IDLE);
@@ -120,6 +122,9 @@ const Index = () => {
             <TabsContent value="upload">
               <VideoUploader
                 onVideoSelected={handleVideoSelected}
+                selectedVideos={selectedVideos}
+                previewUrls={previewUrls}
+                setPreviewUrls={setPreviewUrls}
                 isProcessing={isProcessing}
               />
 
