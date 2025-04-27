@@ -89,10 +89,15 @@ const VideoUploader = ({
     fileInputRef.current?.click();
   };
 
-  const removeSelectedVideo = () => {
-    setSelectedVideos(null);
-    setPreviewUrls(null);
-    if (fileInputRef.current) fileInputRef.current.value = "";
+  const removeSelectedVideo = (videoIndex: number) => {
+    const newSelectedVideos = [...selectedVideos];
+    const newPreviewUrls = [...previewUrls];
+    newSelectedVideos.splice(videoIndex, 1);
+    newPreviewUrls.splice(videoIndex, 1);
+    setSelectedVideos(newSelectedVideos);
+    setPreviewUrls(newPreviewUrls);
+    if (fileInputRef.current && !selectedVideos.length)
+      fileInputRef.current.value = "";
   };
 
   const handleUpload = async () => {
@@ -160,18 +165,18 @@ const VideoUploader = ({
         </div>
       ) : (
         <div className="relative rounded-md overflow-auto h-[70vh] border border-gray-200">
-          {previewUrls.map((previewUrls, index) => (
+          {previewUrls.map((previewUrl, index) => (
             <>
               {!isProcessing && (
                 <button
                   className="absolute mt-2 right-2 p-1 bg-gray-800 bg-opacity-60 rounded-full text-white z-10"
-                  onClick={removeSelectedVideo}
+                  onClick={() => removeSelectedVideo(index)}
                 >
                   <X className="h-5 w-5" />
                 </button>
               )}
               <video
-                src={previewUrls || undefined}
+                src={previewUrl || undefined}
                 controls
                 className="w-full max-h-[500px]"
               />
