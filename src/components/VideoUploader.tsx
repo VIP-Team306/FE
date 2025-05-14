@@ -108,13 +108,7 @@ const VideoUploader = ({
     if (!selectedVideos) return;
 
     try {
-      const result = await MockViolenceDetectionService.detectViolence(
-        selectedVideos
-      );
-      toast({
-        title: result.message,
-        description: `רמת ביטחון: ${(result.confidence * 100).toFixed(2)}%`,
-      });
+      await MockViolenceDetectionService.detectViolence(selectedVideos);
     } catch (error) {
       console.error("Error during upload:", error);
       toast({

@@ -6,8 +6,14 @@ import {
   ViolenceDetectionResult,
   DetectionStatus,
   MockViolenceDetectionService,
+  resultsToastMessages,
 } from "@/services/MockViolenceDetectionService"; // Correct import
 import { useToast } from "@/components/ui/use-toast";
+import axios from "axios";
+
+const backEndInstance = axios.create({
+  baseURL: "http://localhost:8000",
+});
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState("upload");
@@ -16,8 +22,9 @@ const Index = () => {
   const [detectionStatus, setDetectionStatus] = useState<DetectionStatus>(
     DetectionStatus.IDLE
   );
-  const [detectionResult, setDetectionResult] =
-    useState<ViolenceDetectionResult | null>(null);
+  const [detectionResult, setDetectionResult] = useState<
+    ViolenceDetectionResult[] | null
+  >(null);
   const { toast } = useToast();
 
   const handleVideoSelected = (file: File[]) => {
@@ -48,19 +55,38 @@ const Index = () => {
         description: "מערכת הבינה המלאכותית מנתחת את תוכן הסרטון",
       });
 
-      const result = await MockViolenceDetectionService.detectViolence(
+      // const formData = new FormData();
+      // // Append each file to the FormData object
+      // selectedVideos.forEach((video) => {
+      //   formData.append("files", video);
+      // });
+      // const response = await backEndInstance.post("detect", formData, {
+      //   headers: {
+      //     "Content-Type": "multipart/form-data",
+      //   },
+      // });
+      // console.log(response);
+
+      const results = await MockViolenceDetectionService.detectViolence(
         selectedVideos
       );
 
-      setDetectionResult(result);
+      setDetectionResult(results);
       setDetectionStatus(DetectionStatus.COMPLETED);
       setActiveTab("results");
-
-      toast({
-        variant: result.isViolent ? "destructive" : "default",
-        title: "הבדיקה הושלמה",
-        description: result.message,
-      });
+      toast(
+        results.some((result) => result.isViolent)
+          ? {
+              variant: "destructive",
+              title: "הבדיקה הושלמה",
+              description: resultsToastMessages.violent,
+            }
+          : {
+              variant: "default",
+              title: "הבדיקה הושלמה",
+              description: resultsToastMessages.unviolent,
+            }
+      );
     } catch (error) {
       console.error("Error during violence detection:", error);
       setDetectionStatus(DetectionStatus.ERROR);
@@ -149,7 +175,7 @@ const Index = () => {
 
             <TabsContent value="results">
               <ResultDisplay
-                result={detectionResult}
+                results={detectionResult}
                 isLoading={isProcessing}
                 onReset={handleReset}
               />
