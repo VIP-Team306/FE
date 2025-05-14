@@ -10,6 +10,7 @@ import {
 } from "@/services/MockViolenceDetectionService"; // Correct import
 import { useToast } from "@/components/ui/use-toast";
 import axios from "axios";
+import CameraIcon from "@/assets/vip-camera1.png";
 
 const backEndInstance = axios.create({
   baseURL: "http://localhost:8000",
@@ -115,17 +116,17 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4">
       <div className="max-w-5xl mx-auto bg-white rounded-lg shadow-sm p-8">
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
-          <div>
+        <div className="flex flex-col md:flex-row items-start md:items-center mb-8">
+          <div className="mt-4 md:mt-0 h-[20vh] w-[20vh]">
+            <img src={CameraIcon} />
+          </div>
+          <div className="pr-4">
             <h1 className="text-3xl font-bold mb-2">
               ברוכים הבאים למערכת לבדיקת אלימות בסרטונים
             </h1>
             <p className="text-gray-600">
               יחד נוריד את שיעור האלימות במרחב הציבורי
             </p>
-          </div>
-          <div className="mt-4 md:mt-0">
-            <h2 className="text-2xl font-bold">VIP</h2>
           </div>
         </div>
 

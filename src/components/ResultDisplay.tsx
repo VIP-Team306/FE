@@ -101,7 +101,7 @@ const ResultDisplay = ({ results, isLoading, onReset }: ResultDisplayProps) => {
       ))}
 
       <Button onClick={onReset} variant="outline" className="mt-2">
-        בדוק סרטון נוסף
+        בדוק סרטונים נוספים
       </Button>
     </motion.div>
   );
