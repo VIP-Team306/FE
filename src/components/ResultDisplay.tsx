@@ -21,7 +21,7 @@ const ResultDisplay = ({ results, isLoading, onReset }: ResultDisplayProps) => {
         <p className="text-gray-500 text-sm mb-2">
           מערכת הבינה המלאכותית מנתחת את תוכן הסרטון
         </p>
-        <div className="w-full max-w-md bg-gray-200 rounded-full h-2 mt-4">
+        <div className="w-full h-full max-w-md bg-gray-200 rounded-full h-2 mt-4">
           <div
             className="bg-blue-500 h-2 rounded-full animate-pulse-blue"
             style={{ width: "100%" }}
@@ -43,11 +43,11 @@ const ResultDisplay = ({ results, isLoading, onReset }: ResultDisplayProps) => {
       initial="hidden"
       animate="visible"
       variants={variants}
-      className={`p-6 rounded-md shadow-sm ${"bg-green-50 border border-green-200"}`}
+      className={`p-6 rounded-md shadow-sm flex flex-col items-center text-center `}
     >
       {results.map((result) => (
         <div
-          className={`flex flex-col items-center text-center
+          className={`flex flex-col items-center text-center pt-5 my-4 h-full w-full
           ${
             result.isViolent
               ? "bg-red-50 border border-red-200"

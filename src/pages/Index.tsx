@@ -129,7 +129,7 @@ const Index = () => {
         </div>
 
         <div className="w-full">
-          <Tabs value={activeTab} onValueChange={setActiveTab} className="mb-8">
+          <Tabs value={activeTab} onValueChange={setActiveTab}>
             <TabsList className="grid grid-cols-2 mb-8">
               <TabsTrigger
                 value="upload"
