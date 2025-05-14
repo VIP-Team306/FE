@@ -68,7 +68,8 @@ const Index = () => {
       // console.log(response);
 
       const results = await MockViolenceDetectionService.detectViolence(
-        selectedVideos
+        selectedVideos,
+        previewUrls
       );
 
       setDetectionResult(results);
