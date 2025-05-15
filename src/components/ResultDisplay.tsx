@@ -48,7 +48,7 @@ const ResultDisplay = ({ results, isLoading, onReset }: ResultDisplayProps) => {
       {results.map((result) => (
         <div
           dir="rtl"
-          className={`grid grid-cols-[15%_70%_15%] gap-4 pt-5 my-4 w-full
+          className={`grid grid-cols-[20%_60%_20%] gap-4 pt-5 my-4 w-full
           ${
             result.isViolent
               ? "bg-red-50 border border-red-200"
@@ -56,7 +56,7 @@ const ResultDisplay = ({ results, isLoading, onReset }: ResultDisplayProps) => {
           }
         }`}
         >
-          <div className="h-[30vh] flex justify-center">
+          <div className="max-h-[180px] max-w-[180px] flex justify-center items-center">
             <video
               src={result.previewUrl || undefined}
               controls

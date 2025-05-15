@@ -117,7 +117,7 @@ const Index = () => {
     <div className="min-h-screen bg-gray-50 py-12 px-4">
       <div className="max-w-5xl mx-auto bg-white rounded-lg shadow-sm p-8">
         <div className="flex flex-col md:flex-row items-start md:items-center mb-8">
-          <div className="mt-4 md:mt-0 h-[20vh] w-[20vh]">
+          <div className="mt-4 md:mt-0 h-[80px] w-[80px]">
             <img src={CameraIcon} />
           </div>
           <div className="pr-4">
