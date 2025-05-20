@@ -142,6 +142,7 @@ const Index = () => {
               <TabsTrigger
                 value="results"
                 className={activeTab === "results" ? "tab-active" : ""}
+                disabled={detectionStatus !== DetectionStatus.COMPLETED}
               >
                 תוצאות בדיקה
               </TabsTrigger>
@@ -168,7 +169,7 @@ const Index = () => {
                 <button
                   className="px-5 py-2 bg-white text-gray-800 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors"
                   onClick={handleReset}
-                  disabled={isProcessing}
+                  disabled={!selectedVideos || isProcessing}
                 >
                   ביטול
                 </button>
