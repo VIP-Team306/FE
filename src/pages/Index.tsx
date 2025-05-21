@@ -11,6 +11,7 @@ import {
 import { useToast } from "@/components/ui/use-toast";
 import axios from "axios";
 import CameraIcon from "@/assets/vip-camera1.png";
+import { BACKEAND_URL } from "@/config";
 
 //TODO: delete
 const MOCK_RESULTS = [
@@ -28,7 +29,7 @@ const MOCK_RESULTS = [
   },
 ];
 const backEndInstance = axios.create({
-  baseURL: "http://localhost:8000",
+  baseURL: BACKEAND_URL,
 });
 
 const requestPrediction = async (selectedVideos: File[]) => {
@@ -143,8 +144,8 @@ const Index = () => {
     detectionStatus === DetectionStatus.DETECTING;
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12 px-4">
-      <div className="max-w-5xl mx-auto bg-white rounded-lg shadow-sm p-8">
+    <div className="min-h-screen bg-[#f7f7f7] py-12 px-4">
+      <div className="max-w-5xl mx-auto bg-white rounded-lg shadow-[0px_10px_20px_rgba(0,0,0,0.3)] p-8">
         <div className="flex flex-col md:flex-row items-start md:items-center mb-8">
           <div className="mt-4 md:mt-0 h-[80px] w-[80px]">
             <img src={CameraIcon} />
