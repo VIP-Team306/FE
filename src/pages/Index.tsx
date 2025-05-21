@@ -12,9 +12,53 @@ import { useToast } from "@/components/ui/use-toast";
 import axios from "axios";
 import CameraIcon from "@/assets/vip-camera1.png";
 
+//TODO: delete
+const MOCK_RESULTS = [
+  {
+    file_name: "20250422_233246.mp4",
+    violence_score: 0.9,
+  },
+  {
+    file_name: "20250425_145458.mp4",
+    violence_score: 0.15,
+  },
+  {
+    file_name: "VID-20250417-WA0025.mp4",
+    violence_score: 0.55,
+  },
+];
 const backEndInstance = axios.create({
   baseURL: "http://localhost:8000",
 });
+
+const requestPrediction = async (selectedVideos: File[]) => {
+  const formData = new FormData();
+  selectedVideos.forEach((video) => {
+    formData.append("files", video);
+  });
+  const response = await backEndInstance.post("predict", formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+  // return response.data.results;
+  return MOCK_RESULTS;
+};
+
+const detect = async (
+  selectedVideos: File[],
+  previewUrls: string[]
+): Promise<ViolenceDetectionResult[]> => {
+  const predictions = await requestPrediction(selectedVideos);
+  return selectedVideos.map((_, index) => {
+    const prediction = predictions[index].violence_score;
+    return {
+      isViolent: prediction > 0.5,
+      confidence: Math.abs(prediction - 0.5) * 2,
+      previewUrl: previewUrls[index],
+    };
+  });
+};
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState("upload");
@@ -56,22 +100,7 @@ const Index = () => {
         description: "מערכת הבינה המלאכותית מנתחת את תוכן הסרטון",
       });
 
-      // const formData = new FormData();
-      // // Append each file to the FormData object
-      // selectedVideos.forEach((video) => {
-      //   formData.append("files", video);
-      // });
-      // const response = await backEndInstance.post("detect", formData, {
-      //   headers: {
-      //     "Content-Type": "multipart/form-data",
-      //   },
-      // });
-      // console.log(response);
-
-      const results = await MockViolenceDetectionService.detectViolence(
-        selectedVideos,
-        previewUrls
-      );
+      const results = await detect(selectedVideos, previewUrls);
 
       setDetectionResult(results);
       setDetectionStatus(DetectionStatus.COMPLETED);
