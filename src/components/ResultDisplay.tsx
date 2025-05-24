@@ -47,7 +47,7 @@ const ResultDisplay = ({ results, isLoading, onReset }: ResultDisplayProps) => {
     >
       {results.map((result) => (
         <div
-          dir="rtl"
+          dir="ltr"
           className={`grid grid-cols-[20%_60%_20%] gap-4 pt-5 my-4 w-full
           ${
             result.isViolent
@@ -101,7 +101,7 @@ const ResultDisplay = ({ results, isLoading, onReset }: ResultDisplayProps) => {
       ))}
 
       <Button onClick={onReset} variant="outline" className="mt-2">
-        Check out more videos
+        Check Out More Videos
       </Button>
     </motion.div>
   );

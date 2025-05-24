@@ -157,8 +157,8 @@ const VideoUploader = ({
               disabled={isProcessing}
               onClick={handleUpload}
             >
-              <Upload className="h-4 w-4 ml-2" />
-              <span>upload video</span>
+              <span>Upload Video</span>
+              <Upload className="h-4 w-4" />
             </Button>
           </div>
         </div>

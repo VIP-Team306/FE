@@ -153,7 +153,7 @@ const Index = () => {
           <div className="mt-4 md:mt-0 h-[80px] w-[80px]">
             <img src={CameraIcon} />
           </div>
-          <div className="pr-4">
+          <div className="pl-4">
             <h1 className="text-3xl font-bold mb-2">
               Welcome to the violence detection system in videos
             </h1>
@@ -170,7 +170,7 @@ const Index = () => {
                 value="upload"
                 className={activeTab === "upload" ? "tab-active" : ""}
               >
-                Uploading videos for review
+                Uploading Videos for Review
                 <Upload className="h-4 w-4 ml-2" />
               </TabsTrigger>
               <TabsTrigger
@@ -178,7 +178,7 @@ const Index = () => {
                 className={activeTab === "results" ? "tab-active" : ""}
                 disabled={detectionStatus !== DetectionStatus.COMPLETED}
               >
-                Test results
+                Test Results
                 <ClipboardList className="h-4 w-4 ml-2" />
               </TabsTrigger>
             </TabsList>
@@ -198,7 +198,7 @@ const Index = () => {
                   onClick={handleCheckVideo}
                   disabled={!selectedVideos || isProcessing}
                 >
-                  start detection
+                  Start Detection
                 </button>
 
                 <button
@@ -206,7 +206,7 @@ const Index = () => {
                   onClick={handleReset}
                   disabled={!selectedVideos || isProcessing}
                 >
-                  cancel
+                  Cancel
                 </button>
               </div>
             </TabsContent>
