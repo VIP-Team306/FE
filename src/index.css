@@ -102,15 +102,10 @@
   @apply relative text-primary;
 }
 
-.tab-active::after {
-  content: "";
-  @apply absolute bottom-0 left-0 right-0 h-0.5 bg-primary;
-}
-
 .upload-area {
-  @apply border-2 border-dashed border-blue-300 rounded-md p-12 text-center transition-all cursor-pointer hover:border-blue-500;
+  @apply border-2 border-dashed border-[#233964] rounded-md p-12 text-center transition-all cursor-pointer hover:border-[#233964];
 }
 
 .upload-area.dragging {
-  @apply border-blue-500 bg-blue-50;
+  @apply border-[#233964] bg-[#233964];
 }

@@ -128,7 +128,7 @@ const VideoUploader = ({
           onClick={handleButtonClick}
         >
           <div className="flex flex-col items-center justify-center">
-            <Plus className="h-12 w-12 text-blue-500 mb-4" />
+            <Plus className="h-12 w-12 text-[#233964] mb-4" />
             <p className="text-lg font-medium mb-1">
               Drag or upload a video for review
             </p>

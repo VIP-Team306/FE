@@ -10,7 +10,7 @@ import {
 } from "@/services/MockViolenceDetectionService"; // Correct import
 import { useToast } from "@/components/ui/use-toast";
 import axios from "axios";
-import CameraIcon from "@/assets/vip-camera1.png";
+import CameraIcon from "@/assets/new-logo.jpg";
 import { BACKEAND_URL } from "@/config";
 import { Upload, ClipboardList } from "lucide-react";
 
@@ -143,12 +143,12 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-[linear-gradient(to_bottom_right,rgba(255,255,255,0.05),rgba(255,255,255,0.3)),url('/blue-poster.png')] py-12 px-4">
       <div className="max-w-5xl mx-auto bg-white rounded-lg shadow-[0px_3px_10px_rgba(0,0,0,0.3)] opacity-100 p-8">
-        <div className="flex flex-col md:flex-row items-start md:items-center mb-8">
-          <div className="mt-4 md:mt-0 h-[80px] w-[80px]">
-            <img src={CameraIcon} />
+        <div className="flex flex-col md:flex-row items-start md:items-center content-center mb-8 h-[80px]">
+          <div className="mt-4 md:mt-0 h-[100%]">
+            <img src={CameraIcon} className="h-[100%]" />
           </div>
-          <div className="pl-4">
-            <h1 className="text-3xl font-bold mb-2">
+          <div className="pl-2">
+            <h1 className="text-3xl font-bold">
               Welcome to the violence detection system in videos
             </h1>
             <p className="text-gray-600">
@@ -188,7 +188,7 @@ const Index = () => {
 
               <div className="flex justify-center mt-8 gap-4">
                 <button
-                  className="px-5 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="px-5 py-2 bg-[#233964] text-white rounded-md hover:bg-[#00142d] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                   onClick={handleCheckVideo}
                   disabled={!selectedVideos || isProcessing}
                 >
