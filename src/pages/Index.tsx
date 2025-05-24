@@ -12,6 +12,7 @@ import { useToast } from "@/components/ui/use-toast";
 import axios from "axios";
 import CameraIcon from "@/assets/vip-camera1.png";
 import { BACKEAND_URL } from "@/config";
+import { Upload, ClipboardList } from "lucide-react";
 
 //TODO: delete
 const MOCK_RESULTS = [
@@ -144,8 +145,8 @@ const Index = () => {
     detectionStatus === DetectionStatus.DETECTING;
 
   return (
-    <div className="min-h-screen bg-[#f7f7f7] py-12 px-4">
-      <div className="max-w-5xl mx-auto bg-white rounded-lg shadow-[0px_10px_20px_rgba(0,0,0,0.3)] p-8">
+    <div className="min-h-screen bg-[linear-gradient(to_bottom_right,rgba(255,255,255,0.05),rgba(255,255,255,0.3)),url('/blue-poster.png')] py-12 px-4">
+      <div className="max-w-5xl mx-auto bg-white rounded-lg shadow-[0px_3px_10px_rgba(0,0,0,0.3)] opacity-100 p-8">
         <div className="flex flex-col md:flex-row items-start md:items-center mb-8">
           <div className="mt-4 md:mt-0 h-[80px] w-[80px]">
             <img src={CameraIcon} />
@@ -168,6 +169,7 @@ const Index = () => {
                 className={activeTab === "upload" ? "tab-active" : ""}
               >
                 העלאת סרטונים לבדיקה
+                <Upload className="h-4 w-4 ml-2" />
               </TabsTrigger>
               <TabsTrigger
                 value="results"
@@ -175,6 +177,7 @@ const Index = () => {
                 disabled={detectionStatus !== DetectionStatus.COMPLETED}
               >
                 תוצאות בדיקה
+                <ClipboardList className="h-4 w-4 ml-2" />
               </TabsTrigger>
             </TabsList>
 
