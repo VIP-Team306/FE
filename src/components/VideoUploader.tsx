@@ -105,21 +105,6 @@ const VideoUploader = ({
       fileInputRef.current.value = "";
   };
 
-  const handleUpload = async () => {
-    if (!selectedVideos) return;
-
-    try {
-      await MockViolenceDetectionService.detectViolence(selectedVideos);
-    } catch (error) {
-      console.error("Error during upload:", error);
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description: "network error",
-      });
-    }
-  };
-
   return (
     <div className="w-full max-w-2xl mx-auto">
       <input
@@ -155,7 +140,6 @@ const VideoUploader = ({
               size="sm"
               className="flex items-center"
               disabled={isProcessing}
-              onClick={handleUpload}
             >
               <span>Upload Video</span>
               <Upload className="h-4 w-4" />
