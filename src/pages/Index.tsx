@@ -83,8 +83,8 @@ const Index = () => {
     if (!selectedVideos) {
       toast({
         variant: "destructive",
-        title: "לא נבחר סרטון",
-        description: "אנא בחר סרטון לבדיקה",
+        title: "No video selected",
+        description: "please select some videos",
       });
       return;
     }
@@ -92,14 +92,15 @@ const Index = () => {
     try {
       setDetectionStatus(DetectionStatus.UPLOADING);
       toast({
-        title: "מעלה סרטון",
-        description: "מתחיל בתהליך העלאת הסרטון לשרת",
+        title: "Uploading videos",
+        description: "starting the upload-video process",
       });
 
       setDetectionStatus(DetectionStatus.DETECTING);
       toast({
-        title: "בדיקת סרטון",
-        description: "מערכת הבינה המלאכותית מנתחת את תוכן הסרטון",
+        title: "Starting detaction",
+        description:
+          "The artificial intelligence system analyzes the content of the video",
       });
 
       const results = await detect(selectedVideos, previewUrls);
@@ -111,12 +112,12 @@ const Index = () => {
         results.some((result) => result.isViolent)
           ? {
               variant: "destructive",
-              title: "הבדיקה הושלמה",
+              title: "detection completed",
               description: resultsToastMessages.violent,
             }
           : {
               variant: "default",
-              title: "הבדיקה הושלמה",
+              title: "detection completed",
               description: resultsToastMessages.unviolent,
             }
       );
@@ -126,8 +127,9 @@ const Index = () => {
 
       toast({
         variant: "destructive",
-        title: "שגיאה בתהליך הבדיקה",
-        description: "אירעה שגיאה בעת בדיקת הסרטון, אנא נסה שנית",
+        title: "Error in detection process",
+        description:
+          "An error occurred while checking the video, please try again",
       });
     }
   };
@@ -153,10 +155,10 @@ const Index = () => {
           </div>
           <div className="pr-4">
             <h1 className="text-3xl font-bold mb-2">
-              ברוכים הבאים למערכת לבדיקת אלימות בסרטונים
+              Welcome to the violence detection system in videos
             </h1>
             <p className="text-gray-600">
-              יחד נוריד את שיעור האלימות במרחב הציבורי
+              Together we will reduce the level of violence in public spaces
             </p>
           </div>
         </div>
@@ -168,7 +170,7 @@ const Index = () => {
                 value="upload"
                 className={activeTab === "upload" ? "tab-active" : ""}
               >
-                העלאת סרטונים לבדיקה
+                Uploading videos for review
                 <Upload className="h-4 w-4 ml-2" />
               </TabsTrigger>
               <TabsTrigger
@@ -176,7 +178,7 @@ const Index = () => {
                 className={activeTab === "results" ? "tab-active" : ""}
                 disabled={detectionStatus !== DetectionStatus.COMPLETED}
               >
-                תוצאות בדיקה
+                Test results
                 <ClipboardList className="h-4 w-4 ml-2" />
               </TabsTrigger>
             </TabsList>
@@ -196,7 +198,7 @@ const Index = () => {
                   onClick={handleCheckVideo}
                   disabled={!selectedVideos || isProcessing}
                 >
-                  בדיקת הסרטון
+                  start detection
                 </button>
 
                 <button
@@ -204,7 +206,7 @@ const Index = () => {
                   onClick={handleReset}
                   disabled={!selectedVideos || isProcessing}
                 >
-                  ביטול
+                  cancel
                 </button>
               </div>
             </TabsContent>

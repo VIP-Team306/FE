@@ -46,16 +46,17 @@ const VideoUploader = ({
     if (!ACCEPTED_VIDEO_TYPES.includes(file.type)) {
       toast({
         variant: "destructive",
-        title: "סוג קובץ לא נתמך",
-        description: "אנא העלה קובץ וידאו בפורמט MP4, WebM, OGG או MOV",
+        title: "Unsupported file type",
+        description:
+          "Please upload a video file in format MP4, WebM, OGG or MOV",
       });
       return false;
     }
     if (file.size > MAX_FILE_SIZE) {
       toast({
         variant: "destructive",
-        title: "קובץ גדול מדי",
-        description: "גודל הקובץ המקסימלי הוא 1GB",
+        title: "File too large",
+        description: "The maximum file size is 1GB",
       });
       return false;
     }
@@ -113,8 +114,8 @@ const VideoUploader = ({
       console.error("Error during upload:", error);
       toast({
         variant: "destructive",
-        title: "שגיאה",
-        description: "שגיאה ברשת.",
+        title: "Error",
+        description: "network error",
       });
     }
   };
@@ -144,10 +145,10 @@ const VideoUploader = ({
           <div className="flex flex-col items-center justify-center">
             <Plus className="h-12 w-12 text-blue-500 mb-4" />
             <p className="text-lg font-medium mb-1">
-              גרור או העלה סרטון לבדיקה
+              Drag or upload a video for review
             </p>
             <p className="text-sm text-gray-500 mb-4" dir="rtl">
-              תומך בקבצי MP4, WebM, OGG, MOV עד 1GB
+              Supports file types: MP4, WebM, OGG, MOV up to 1GB
             </p>
             <Button
               variant="secondary"
@@ -157,7 +158,7 @@ const VideoUploader = ({
               onClick={handleUpload}
             >
               <Upload className="h-4 w-4 ml-2" />
-              <span>העלה סרטון</span>
+              <span>upload video</span>
             </Button>
           </div>
         </div>

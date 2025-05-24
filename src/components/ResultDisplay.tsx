@@ -17,9 +17,9 @@ const ResultDisplay = ({ results, isLoading, onReset }: ResultDisplayProps) => {
     return (
       <div className="flex flex-col items-center justify-center p-6 bg-white rounded-md shadow-sm border border-gray-200">
         <Loader2 className="h-10 w-10 text-blue-500 animate-spin mb-4" />
-        <h3 className="text-lg font-semibold">בודק את הסרטון...</h3>
+        <h3 className="text-lg font-semibold">Checking the video...</h3>
         <p className="text-gray-500 text-sm mb-2">
-          מערכת הבינה המלאכותית מנתחת את תוכן הסרטון
+          The artificial intelligence system analyzes the content of the video
         </p>
         <div className="w-full h-full max-w-md bg-gray-200 rounded-full h-2 mt-4">
           <div
@@ -85,7 +85,7 @@ const ResultDisplay = ({ results, isLoading, onReset }: ResultDisplayProps) => {
             </h3>
 
             <p className="text-gray-600 mb-4">
-              רמת ביטחון: {Math.round(result.confidence * 100)}%
+              Confidence level: {Math.round(result.confidence * 100)}%
             </p>
 
             <div className="w-full max-w-md bg-gray-200 rounded-full h-2.5 mb-6">
@@ -101,7 +101,7 @@ const ResultDisplay = ({ results, isLoading, onReset }: ResultDisplayProps) => {
       ))}
 
       <Button onClick={onReset} variant="outline" className="mt-2">
-        בדוק סרטונים נוספים
+        Check out more videos
       </Button>
     </motion.div>
   );
