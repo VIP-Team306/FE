@@ -108,19 +108,13 @@ const Index = () => {
       setDetectionResult(results);
       setDetectionStatus(DetectionStatus.COMPLETED);
       setActiveTab("results");
-      toast(
-        results.some((result) => result.isViolent)
-          ? {
-              variant: "destructive",
-              title: "detection completed",
-              description: resultsToastMessages.violent,
-            }
-          : {
-              variant: "default",
-              title: "detection completed",
-              description: resultsToastMessages.unviolent,
-            }
-      );
+      toast({
+        variant: "default",
+        title: "detection completed",
+        description: results.some((result) => result.isViolent)
+          ? resultsToastMessages.violent
+          : resultsToastMessages.unviolent,
+      });
     } catch (error) {
       console.error("Error during violence detection:", error);
       setDetectionStatus(DetectionStatus.ERROR);

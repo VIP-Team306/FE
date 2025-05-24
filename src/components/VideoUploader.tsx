@@ -106,7 +106,7 @@ const VideoUploader = ({
   };
 
   return (
-    <div className="w-full max-w-2xl mx-auto">
+    <div className="w-full max-w-3xl mx-auto">
       <input
         ref={fileInputRef}
         type="file"
@@ -147,9 +147,12 @@ const VideoUploader = ({
           </div>
         </div>
       ) : (
-        <div className="relative rounded-md overflow-auto h-[70vh] border border-gray-200">
+        <div className="grid grid-cols-3 gap-4 p-4 border border-gray-200 max-h-[70vh] overflow-y-auto">
           {previewUrls.map((previewUrl, index) => (
-            <>
+            <div
+              key={index}
+              className="relative rounded-md overflow-hidden border"
+            >
               {!isProcessing && (
                 <button
                   className="absolute mt-2 right-2 p-1 bg-gray-800 bg-opacity-60 rounded-full text-white z-10"
@@ -161,7 +164,7 @@ const VideoUploader = ({
               <video
                 src={previewUrl || undefined}
                 controls
-                className="w-full max-h-[500px]"
+                className="w-full h-[200px]"
               />
               <div className="p-3 bg-white border-t border-gray-200">
                 <p
@@ -174,8 +177,7 @@ const VideoUploader = ({
                   {(selectedVideos[index]?.size / (1024 * 1024)).toFixed(2)} MB
                 </p>
               </div>
-              <hr />
-            </>
+            </div>
           ))}
         </div>
       )}
