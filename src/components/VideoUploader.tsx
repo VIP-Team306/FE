@@ -116,71 +116,79 @@ const VideoUploader = ({
         className="hidden"
         disabled={isProcessing}
       />
-      {!selectedVideos?.length ? (
-        <div
-          className={`upload-area ${
-            dragActive ? "dragging" : ""
-          } hover:bg-gray-100`}
-          onDragEnter={handleDrag}
-          onDragOver={handleDrag}
-          onDragLeave={handleDrag}
-          onDrop={handleDrop}
-          onClick={handleButtonClick}
-        >
-          <div className="flex flex-col items-center justify-center">
-            <Plus className="h-12 w-12 text-[#233964] mb-4" />
-            <p className="text-lg font-medium mb-1">
-              Drag or upload a video for review
-            </p>
-            <p className="text-sm text-gray-500 mb-4" dir="rtl">
-              Supports file types: MP4, WebM, OGG, MOV up to 1GB
-            </p>
-            <Button
-              variant="secondary"
-              size="sm"
-              className="flex items-center"
-              disabled={isProcessing}
-            >
-              <span>Upload Video</span>
-              <Upload className="h-4 w-4" />
-            </Button>
-          </div>
-        </div>
-      ) : (
-        <div className="grid grid-cols-3 gap-4 p-4 border border-gray-200 max-h-[70vh] overflow-y-auto">
-          {previewUrls.map((previewUrl, index) => (
-            <div
-              key={index}
-              className="relative rounded-md overflow-hidden border"
-            >
-              {!isProcessing && (
-                <button
-                  className="absolute mt-2 right-2 p-1 bg-gray-800 bg-opacity-60 rounded-full text-white z-10"
-                  onClick={() => removeSelectedVideo(index)}
-                >
-                  <X className="h-5 w-5" />
-                </button>
-              )}
-              <video
-                src={previewUrl || undefined}
-                controls
-                className="w-full h-[200px]"
-              />
-              <div className="p-3 bg-white border-t border-gray-200">
-                <p
-                  className="font-medium text-sm truncate"
-                  title={selectedVideos[index]?.name}
-                >
-                  {selectedVideos[index]?.name}
-                </p>
-                <p className="text-xs text-gray-500">
-                  {(selectedVideos[index]?.size / (1024 * 1024)).toFixed(2)} MB
-                </p>
-              </div>
+      <div className="relative">
+        {!selectedVideos?.length ? (
+          <div
+            className={`upload-area ${
+              dragActive ? "dragging" : ""
+            } hover:bg-gray-100`}
+            onDragEnter={handleDrag}
+            onDragOver={handleDrag}
+            onDragLeave={handleDrag}
+            onDrop={handleDrop}
+            onClick={handleButtonClick}
+          >
+            <div className="flex flex-col items-center justify-center">
+              <Plus className="h-12 w-12 text-[#233964] mb-4" />
+              <p className="text-lg font-medium mb-1">
+                Drag or upload a video for review
+              </p>
+              <p className="text-sm text-gray-500 mb-4" dir="rtl">
+                Supports file types: MP4, WebM, OGG, MOV up to 1GB
+              </p>
+              <Button
+                variant="secondary"
+                size="sm"
+                className="flex items-center"
+                disabled={isProcessing}
+              >
+                <span>Upload Video</span>
+                <Upload className="h-4 w-4" />
+              </Button>
             </div>
-          ))}
-        </div>
-      )}
+          </div>
+        ) : (
+          <div className="grid grid-cols-3 gap-4 p-4 border border-gray-200 max-h-[70vh] overflow-y-auto">
+            {previewUrls.map((previewUrl, index) => (
+              <div
+                key={index}
+                className="relative rounded-md overflow-hidden border"
+              >
+                {!isProcessing && (
+                  <button
+                    className="absolute mt-2 right-2 p-1 bg-gray-800 bg-opacity-60 rounded-full text-white z-10"
+                    onClick={() => removeSelectedVideo(index)}
+                  >
+                    <X className="h-5 w-5" />
+                  </button>
+                )}
+                <video
+                  src={previewUrl || undefined}
+                  controls
+                  className="w-full h-[200px]"
+                />
+                <div className="p-3 bg-white border-t border-gray-200">
+                  <p
+                    className="font-medium text-sm truncate"
+                    title={selectedVideos[index]?.name}
+                  >
+                    {selectedVideos[index]?.name}
+                  </p>
+                  <p className="text-xs text-gray-500">
+                    {(selectedVideos[index]?.size / (1024 * 1024)).toFixed(2)}{" "}
+                    MB
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+        {isProcessing && (
+          <div className="absolute inset-0 bg-white bg-opacity-30 backdrop-blur-sm z-20 flex justify-center items-center">
+            <div className="animate-spin rounded-full border-8 border-t-8 border-gray-200 h-16 w-16 border-t-[#233964]"></div>
+          </div>
+        )}
+      </div>
     </div>
   );
 };
