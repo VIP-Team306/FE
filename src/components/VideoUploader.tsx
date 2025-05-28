@@ -46,16 +46,17 @@ const VideoUploader = ({
     if (!ACCEPTED_VIDEO_TYPES.includes(file.type)) {
       toast({
         variant: "destructive",
-        title: "סוג קובץ לא נתמך",
-        description: "אנא העלה קובץ וידאו בפורמט MP4, WebM, OGG או MOV",
+        title: "Unsupported file type",
+        description:
+          "Please upload a video file in format MP4, WebM, OGG or MOV",
       });
       return false;
     }
     if (file.size > MAX_FILE_SIZE) {
       toast({
         variant: "destructive",
-        title: "קובץ גדול מדי",
-        description: "גודל הקובץ המקסימלי הוא 1GB",
+        title: "File too large",
+        description: "The maximum file size is 1GB",
       });
       return false;
     }
@@ -104,23 +105,8 @@ const VideoUploader = ({
       fileInputRef.current.value = "";
   };
 
-  const handleUpload = async () => {
-    if (!selectedVideos) return;
-
-    try {
-      await MockViolenceDetectionService.detectViolence(selectedVideos);
-    } catch (error) {
-      console.error("Error during upload:", error);
-      toast({
-        variant: "destructive",
-        title: "שגיאה",
-        description: "שגיאה ברשת.",
-      });
-    }
-  };
-
   return (
-    <div className="w-full max-w-2xl mx-auto">
+    <div className="w-full max-w-3xl mx-auto">
       <input
         ref={fileInputRef}
         type="file"
@@ -130,70 +116,79 @@ const VideoUploader = ({
         className="hidden"
         disabled={isProcessing}
       />
-      {!selectedVideos?.length ? (
-        <div
-          className={`upload-area ${
-            dragActive ? "dragging" : ""
-          } hover:bg-gray-100`}
-          onDragEnter={handleDrag}
-          onDragOver={handleDrag}
-          onDragLeave={handleDrag}
-          onDrop={handleDrop}
-          onClick={handleButtonClick}
-        >
-          <div className="flex flex-col items-center justify-center">
-            <Plus className="h-12 w-12 text-blue-500 mb-4" />
-            <p className="text-lg font-medium mb-1">
-              גרור או העלה סרטון לבדיקה
-            </p>
-            <p className="text-sm text-gray-500 mb-4" dir="rtl">
-              תומך בקבצי MP4, WebM, OGG, MOV עד 1GB
-            </p>
-            <Button
-              variant="secondary"
-              size="sm"
-              className="flex items-center"
-              disabled={isProcessing}
-              onClick={handleUpload}
-            >
-              <Upload className="h-4 w-4 ml-2" />
-              <span>העלה סרטון</span>
-            </Button>
+      <div className="relative">
+        {!selectedVideos?.length ? (
+          <div
+            className={`upload-area ${
+              dragActive ? "dragging" : ""
+            } hover:bg-gray-100`}
+            onDragEnter={handleDrag}
+            onDragOver={handleDrag}
+            onDragLeave={handleDrag}
+            onDrop={handleDrop}
+            onClick={handleButtonClick}
+          >
+            <div className="flex flex-col items-center justify-center">
+              <Plus className="h-12 w-12 text-[#233964] mb-4" />
+              <p className="text-lg font-medium mb-1">
+                Drag or upload a video for review
+              </p>
+              <p className="text-sm text-gray-500 mb-4" dir="rtl">
+                Supports file types: MP4, WebM, OGG, MOV up to 1GB
+              </p>
+              <Button
+                variant="secondary"
+                size="sm"
+                className="flex items-center"
+                disabled={isProcessing}
+              >
+                <span>Upload Video</span>
+                <Upload className="h-4 w-4" />
+              </Button>
+            </div>
           </div>
-        </div>
-      ) : (
-        <div className="relative rounded-md overflow-auto h-[70vh] border border-gray-200">
-          {previewUrls.map((previewUrl, index) => (
-            <>
-              {!isProcessing && (
-                <button
-                  className="absolute mt-2 right-2 p-1 bg-gray-800 bg-opacity-60 rounded-full text-white z-10"
-                  onClick={() => removeSelectedVideo(index)}
-                >
-                  <X className="h-5 w-5" />
-                </button>
-              )}
-              <video
-                src={previewUrl || undefined}
-                controls
-                className="w-full max-h-[500px]"
-              />
-              <div className="p-3 bg-white border-t border-gray-200">
-                <p
-                  className="font-medium text-sm truncate"
-                  title={selectedVideos[index]?.name}
-                >
-                  {selectedVideos[index]?.name}
-                </p>
-                <p className="text-xs text-gray-500">
-                  {(selectedVideos[index]?.size / (1024 * 1024)).toFixed(2)} MB
-                </p>
+        ) : (
+          <div className="grid grid-cols-3 gap-4 p-4 border border-gray-200 max-h-[70vh] overflow-y-auto">
+            {previewUrls.map((previewUrl, index) => (
+              <div
+                key={index}
+                className="relative rounded-md overflow-hidden border"
+              >
+                {!isProcessing && (
+                  <button
+                    className="absolute mt-2 right-2 p-1 bg-gray-800 bg-opacity-60 rounded-full text-white z-10"
+                    onClick={() => removeSelectedVideo(index)}
+                  >
+                    <X className="h-5 w-5" />
+                  </button>
+                )}
+                <video
+                  src={previewUrl || undefined}
+                  controls
+                  className="w-full h-[200px]"
+                />
+                <div className="p-3 bg-white border-t border-gray-200">
+                  <p
+                    className="font-medium text-sm truncate"
+                    title={selectedVideos[index]?.name}
+                  >
+                    {selectedVideos[index]?.name}
+                  </p>
+                  <p className="text-xs text-gray-500">
+                    {(selectedVideos[index]?.size / (1024 * 1024)).toFixed(2)}{" "}
+                    MB
+                  </p>
+                </div>
               </div>
-              <hr />
-            </>
-          ))}
-        </div>
-      )}
+            ))}
+          </div>
+        )}
+        {isProcessing && (
+          <div className="absolute inset-0 bg-white bg-opacity-30 backdrop-blur-sm z-20 flex justify-center items-center">
+            <div className="animate-spin rounded-full border-8 border-t-8 border-gray-200 h-16 w-16 border-t-[#233964]"></div>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

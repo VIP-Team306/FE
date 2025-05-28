@@ -5,16 +5,15 @@ export interface ViolenceDetectionResult {
 }
 
 export const resultsToastMessages = {
-  violent: "אותרה אלימות בחלק מהסרטונים שהועלו",
-  unviolent: "לא אותרה אלימות בסרטונים שהועלו",
+  violent: "Violence was detected in some of the uploaded videos",
+  unviolent: "No violence was detected in the uploaded videos",
 } as const;
 
 export const resultMessages = {
-  violent: "אותרה אלימות בסרטון",
-  unviolent: "לא אותרה אלימות בסרטון זה",
+  violent: "Violence was detected in the video",
+  unviolent: "No violence was detected in this video",
 } as const;
 
-// סטטוסים אפשריים של בדיקת הסרטון
 export enum DetectionStatus {
   IDLE = "idle",
   UPLOADING = "uploading",
