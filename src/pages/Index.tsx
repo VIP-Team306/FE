@@ -10,7 +10,7 @@ import {
 } from "@/services/MockViolenceDetectionService"; // Correct import
 import { useToast } from "@/components/ui/use-toast";
 import axios from "axios";
-import CameraIcon from "@/assets/new-logo.jpg";
+import CameraIcon from "@/assets/logo_without_backgr.png";
 import { BACKEAND_URL } from "@/config";
 import { Upload, ClipboardList } from "lucide-react";
 
@@ -19,6 +19,54 @@ const MOCK_RESULTS = [
   {
     file_name: "20250422_233246.mp4",
     violence_score: 0.9,
+  },
+  {
+    file_name: "20250425_145458.mp4",
+    violence_score: 0.15,
+  },
+  {
+    file_name: "VID-20250417-WA0025.mp4",
+    violence_score: 0.55,
+  },
+  {
+    file_name: "20250422_233246.mp4",
+    violence_score: 0.9,
+  },
+  {
+    file_name: "20250425_145458.mp4",
+    violence_score: 0.15,
+  },
+  {
+    file_name: "VID-20250417-WA0025.mp4",
+    violence_score: 0.55,
+  },
+  {
+    file_name: "20250422_233246.mp4",
+    violence_score: 0.9,
+  },
+  {
+    file_name: "20250425_145458.mp4",
+    violence_score: 0.15,
+  },
+  {
+    file_name: "VID-20250417-WA0025.mp4",
+    violence_score: 0.55,
+  },
+  {
+    file_name: "20250425_145458.mp4",
+    violence_score: 0.15,
+  },
+  {
+    file_name: "VID-20250417-WA0025.mp4",
+    violence_score: 0.55,
+  },
+  {
+    file_name: "20250425_145458.mp4",
+    violence_score: 0.15,
+  },
+  {
+    file_name: "VID-20250417-WA0025.mp4",
+    violence_score: 0.55,
   },
   {
     file_name: "20250425_145458.mp4",
