@@ -130,7 +130,7 @@ const ResultDisplay = ({ results, isLoading, onReset }: ResultDisplayProps) => {
             </div>
           ))}
       </div>
-      <Button onClick={onReset} variant="outline" className="mt-2">
+      <Button onClick={onReset} variant="outline" className="my-2">
         Start Over With More Videos
       </Button>
     </motion.div>

@@ -112,8 +112,8 @@ const detect = async (
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState("upload");
-  const [selectedVideos, setSelectedVideos] = useState<File[] | null>(null);
-  const [previewUrls, setPreviewUrls] = useState<string[] | null>(null);
+  const [selectedVideos, setSelectedVideos] = useState<File[]>([]);
+  const [previewUrls, setPreviewUrls] = useState<string[]>([]);
   const [detectionStatus, setDetectionStatus] = useState<DetectionStatus>(
     DetectionStatus.IDLE
   );
@@ -121,14 +121,13 @@ const Index = () => {
     ViolenceDetectionResult[] | null
   >(null);
   const { toast } = useToast();
-
-  const handleVideoSelected = (file: File[]) => {
-    setSelectedVideos(file);
+  const handleVideoSelected = (files: File[]) => {
+    setSelectedVideos([...selectedVideos, ...files]);
     setDetectionResult(null);
   };
 
   const handleCheckVideo = async () => {
-    if (!selectedVideos) {
+    if (!selectedVideos.length) {
       toast({
         variant: "destructive",
         title: "No video selected",
@@ -177,8 +176,8 @@ const Index = () => {
   };
 
   const handleReset = () => {
-    setPreviewUrls(null);
-    setSelectedVideos(null);
+    setPreviewUrls([]);
+    setSelectedVideos([]);
     setDetectionResult(null);
     setDetectionStatus(DetectionStatus.IDLE);
     setActiveTab("upload");
@@ -238,7 +237,7 @@ const Index = () => {
                 <button
                   className="px-5 py-2 bg-[#233964] text-white rounded-md hover:bg-[#00142d] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                   onClick={handleCheckVideo}
-                  disabled={!selectedVideos || isProcessing}
+                  disabled={!selectedVideos.length || isProcessing}
                 >
                   Start Detection
                 </button>
@@ -246,7 +245,7 @@ const Index = () => {
                 <button
                   className="px-5 py-2 bg-white text-gray-800 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors"
                   onClick={handleReset}
-                  disabled={!selectedVideos || isProcessing}
+                  disabled={!selectedVideos.length || isProcessing}
                 >
                   Cancel
                 </button>

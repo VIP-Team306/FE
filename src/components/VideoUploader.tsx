@@ -8,8 +8,8 @@ interface VideoUploaderProps {
   onVideoSelected: (files: File[]) => void;
   isProcessing: boolean;
   selectedVideos: File[];
-  previewUrls: string[] | null;
-  setPreviewUrls: (value: string[] | null) => void;
+  previewUrls: string[];
+  setPreviewUrls: (value: string[]) => void;
 }
 
 const MAX_FILE_SIZE = 1024 * 1024 * 1024; // 1GB
@@ -71,7 +71,7 @@ const VideoUploader = ({
     onVideoSelected(files);
 
     const videoUrls = files.map((file) => URL.createObjectURL(file));
-    setPreviewUrls(videoUrls);
+    setPreviewUrls([...previewUrls, ...videoUrls]);
   };
 
   const handleDrop = (e: DragEvent<HTMLDivElement>) => {
@@ -87,6 +87,7 @@ const VideoUploader = ({
     e.preventDefault();
     if (e.target.files) {
       handleVideoSelection([...e.target.files]);
+      e.target.value = "";
     }
   };
 
@@ -148,39 +149,53 @@ const VideoUploader = ({
             </div>
           </div>
         ) : (
-          <div className="grid grid-cols-3 gap-4 p-4 border border-gray-200 max-h-[60vh] overflow-y-auto">
-            {previewUrls.map((previewUrl, index) => (
-              <div
-                key={index}
-                className="relative rounded-md overflow-hidden border"
-              >
-                {!isProcessing && (
-                  <button
-                    className="absolute mt-2 right-2 p-1 bg-gray-800 bg-opacity-60 rounded-full text-white z-10"
-                    onClick={() => removeSelectedVideo(index)}
-                  >
-                    <X className="h-5 w-5" />
-                  </button>
-                )}
-                <video
-                  src={previewUrl || undefined}
-                  controls
-                  className="w-full h-[200px]"
-                />
-                <div className="p-3 bg-white border-t border-gray-200">
-                  <p
-                    className="font-medium text-sm truncate"
-                    title={selectedVideos[index]?.name}
-                  >
-                    {selectedVideos[index]?.name}
-                  </p>
-                  <p className="text-xs text-gray-500">
-                    {(selectedVideos[index]?.size / (1024 * 1024)).toFixed(2)}{" "}
-                    MB
-                  </p>
+          <div className="p-4 border border-gray-200">
+            <div className="grid grid-cols-3 gap-4 mb-4 max-h-[60vh] overflow-y-auto pl-4">
+              {previewUrls.map((previewUrl, index) => (
+                <div
+                  key={index}
+                  className="relative rounded-md overflow-hidden border"
+                >
+                  {!isProcessing && (
+                    <button
+                      className="absolute mt-2 right-2 p-1 bg-gray-800 bg-opacity-60 rounded-full text-white z-10"
+                      onClick={() => removeSelectedVideo(index)}
+                    >
+                      <X className="h-5 w-5" />
+                    </button>
+                  )}
+                  <video
+                    src={previewUrl || undefined}
+                    controls
+                    className="w-full h-[200px]"
+                  />
+                  <div className="p-3 bg-white border-t border-gray-200">
+                    <p
+                      className="font-medium text-sm truncate"
+                      title={selectedVideos[index]?.name}
+                    >
+                      {selectedVideos[index]?.name}
+                    </p>
+                    <p className="text-xs text-gray-500">
+                      {(selectedVideos[index]?.size / (1024 * 1024)).toFixed(2)}{" "}
+                      MB
+                    </p>
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
+            <div className="flex items-center justify-center w-[100%] border-t border-gray-200 pt-4">
+              <Button
+                variant="secondary"
+                size="sm"
+                className="flex items-center"
+                disabled={isProcessing}
+                onClick={handleButtonClick}
+              >
+                <span>Upload More Videos</span>
+                <Upload className="h-4 w-4" />
+              </Button>
+            </div>
           </div>
         )}
         {isProcessing && (
