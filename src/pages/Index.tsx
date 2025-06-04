@@ -212,16 +212,16 @@ const Index = () => {
                 value="upload"
                 className={activeTab === "upload" ? "tab-active" : ""}
               >
+                <Upload className="h-4 w-4 mr-1" />
                 Uploading Videos for Review
-                <Upload className="h-4 w-4 ml-2" />
               </TabsTrigger>
               <TabsTrigger
                 value="results"
                 className={activeTab === "results" ? "tab-active" : ""}
                 disabled={detectionStatus !== DetectionStatus.COMPLETED}
               >
+                <ClipboardList className="h-4 w-4 mr-1" />
                 Test Results
-                <ClipboardList className="h-4 w-4 ml-2" />
               </TabsTrigger>
             </TabsList>
 

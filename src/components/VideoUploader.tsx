@@ -134,7 +134,7 @@ const VideoUploader = ({
                 Drag or upload a video for review
               </p>
               <p className="text-sm text-gray-500 mb-4" dir="rtl">
-                Supports file types: MP4, WebM, OGG, MOV up to 1GB
+                Supported file types: MP4, WebM, OGG, MOV up to 1GB
               </p>
               <Button
                 variant="secondary"
@@ -148,7 +148,7 @@ const VideoUploader = ({
             </div>
           </div>
         ) : (
-          <div className="grid grid-cols-3 gap-4 p-4 border border-gray-200 max-h-[70vh] overflow-y-auto">
+          <div className="grid grid-cols-3 gap-4 p-4 border border-gray-200 max-h-[60vh] overflow-y-auto">
             {previewUrls.map((previewUrl, index) => (
               <div
                 key={index}
