@@ -114,9 +114,14 @@ const ResultDisplay = ({ results, isLoading, onReset }: ResultDisplayProps) => {
                     : resultMessages.unviolent}
                 </h3>
 
-                <p className="text-gray-600 mb-4">
+                <p className="text-gray-600 mb-2">
                   Confidence level: {Math.round(result.confidence * 100)}%
                 </p>
+                {result.isViolent && (
+                  <p className="text-gray-600 mb-2">
+                    Violance start-time: {result.startTime} seconds
+                  </p>
+                )}
 
                 <div className="w-full max-w-md bg-gray-200 rounded-full h-2.5 mb-6">
                   <div

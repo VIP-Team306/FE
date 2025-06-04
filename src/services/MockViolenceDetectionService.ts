@@ -2,6 +2,7 @@ export interface ViolenceDetectionResult {
   isViolent: boolean;
   confidence: number;
   previewUrl: string;
+  startTime: number;
 }
 
 export const resultsToastMessages = {

@@ -19,62 +19,77 @@ const MOCK_RESULTS = [
   {
     file_name: "20250422_233246.mp4",
     violence_score: 0.9,
+    start_time: 5,
   },
   {
     file_name: "20250425_145458.mp4",
     violence_score: 0.15,
+    start_time: 3.2,
   },
   {
     file_name: "VID-20250417-WA0025.mp4",
     violence_score: 0.55,
+    start_time: 2.5,
   },
   {
     file_name: "20250422_233246.mp4",
     violence_score: 0.9,
+    start_time: 5.6,
   },
   {
     file_name: "20250425_145458.mp4",
     violence_score: 0.15,
+    start_time: 5.6,
   },
   {
     file_name: "VID-20250417-WA0025.mp4",
     violence_score: 0.55,
+    start_time: 5.6,
   },
   {
     file_name: "20250422_233246.mp4",
     violence_score: 0.9,
+    start_time: 5.6,
   },
   {
     file_name: "20250425_145458.mp4",
     violence_score: 0.15,
+    start_time: 5.6,
   },
   {
     file_name: "VID-20250417-WA0025.mp4",
     violence_score: 0.55,
+    start_time: 5.6,
   },
   {
     file_name: "20250425_145458.mp4",
     violence_score: 0.15,
+    start_time: 5.6,
   },
   {
     file_name: "VID-20250417-WA0025.mp4",
     violence_score: 0.55,
+    start_time: 5.6,
   },
   {
     file_name: "20250425_145458.mp4",
     violence_score: 0.15,
+    start_time: 5.6,
   },
   {
     file_name: "VID-20250417-WA0025.mp4",
     violence_score: 0.55,
+    start_time: 5.6,
   },
   {
     file_name: "20250425_145458.mp4",
     violence_score: 0.15,
+    start_time: 5.6,
   },
   {
     file_name: "VID-20250417-WA0025.mp4",
     violence_score: 0.55,
+    start_time: 5.6,
   },
 ];
 const backEndInstance = axios.create({
@@ -101,11 +116,13 @@ const detect = async (
 ): Promise<ViolenceDetectionResult[]> => {
   const predictions = await requestPrediction(selectedVideos);
   return selectedVideos.map((_, index) => {
-    const prediction = predictions[index].violence_score;
+    const { violence_score: prediction, start_time: startTime } =
+      predictions[index];
     return {
       isViolent: prediction > 0.5,
       confidence: Math.abs(prediction - 0.5) * 2,
       previewUrl: previewUrls[index],
+      startTime,
     };
   });
 };
