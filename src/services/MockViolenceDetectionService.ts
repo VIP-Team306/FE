@@ -2,6 +2,7 @@ export interface ViolenceDetectionResult {
   isViolent: boolean;
   confidence: number;
   previewUrl: string;
+  startTime: number;
 }
 
 export const resultsToastMessages = {
@@ -23,26 +24,97 @@ export enum DetectionStatus {
 }
 
 export const MockViolenceDetectionService = {
-  async detectViolence(
-    videoFiles: File[],
-    previewUrls: string[]
-  ): Promise<ViolenceDetectionResult[]> {
+  async detectViolence(videoFiles: File[]) {
     const processingTime = 2000 + Math.random() * 2000;
 
     return new Promise((resolve) => {
       setTimeout(() => {
-        const results = videoFiles.map((_, index) => {
-          const isViolent = Math.random() > 0.5;
-          const confidence = 0.7 + Math.random() * 0.25;
-          return {
-            isViolent,
-            confidence,
-            previewUrl: previewUrls[index],
-          };
-        });
+        const results = videoFiles.map((file) => ({
+          file_name: `${file.name}-Mock`,
+          violence_score: Math.random(),
+          start_time: `${Math.random() * 10}`.slice(0, 4),
+        }));
 
         resolve(results);
       }, processingTime);
     });
   },
 };
+
+export const MOCK_RESULTS = [
+  {
+    file_name: "20250422_233246.mp4",
+    violence_score: 0.9,
+    start_time: 5,
+  },
+  {
+    file_name: "20250425_145458.mp4",
+    violence_score: 0.15,
+    start_time: 3.2,
+  },
+  {
+    file_name: "VID-20250417-WA0025.mp4",
+    violence_score: 0.55,
+    start_time: 2.5,
+  },
+  {
+    file_name: "20250422_233246.mp4",
+    violence_score: 0.9,
+    start_time: 5.6,
+  },
+  {
+    file_name: "20250425_145458.mp4",
+    violence_score: 0.15,
+    start_time: 5.6,
+  },
+  {
+    file_name: "VID-20250417-WA0025.mp4",
+    violence_score: 0.55,
+    start_time: 5.6,
+  },
+  {
+    file_name: "20250422_233246.mp4",
+    violence_score: 0.9,
+    start_time: 5.6,
+  },
+  {
+    file_name: "20250425_145458.mp4",
+    violence_score: 0.15,
+    start_time: 5.6,
+  },
+  {
+    file_name: "VID-20250417-WA0025.mp4",
+    violence_score: 0.55,
+    start_time: 5.6,
+  },
+  {
+    file_name: "20250425_145458.mp4",
+    violence_score: 0.15,
+    start_time: 5.6,
+  },
+  {
+    file_name: "VID-20250417-WA0025.mp4",
+    violence_score: 0.55,
+    start_time: 5.6,
+  },
+  {
+    file_name: "20250425_145458.mp4",
+    violence_score: 0.15,
+    start_time: 5.6,
+  },
+  {
+    file_name: "VID-20250417-WA0025.mp4",
+    violence_score: 0.55,
+    start_time: 5.6,
+  },
+  {
+    file_name: "20250425_145458.mp4",
+    violence_score: 0.15,
+    start_time: 5.6,
+  },
+  {
+    file_name: "VID-20250417-WA0025.mp4",
+    violence_score: 0.55,
+    start_time: 5.6,
+  },
+];

@@ -7,28 +7,14 @@ import {
   DetectionStatus,
   MockViolenceDetectionService,
   resultsToastMessages,
+  MOCK_RESULTS,
 } from "@/services/MockViolenceDetectionService"; // Correct import
 import { useToast } from "@/components/ui/use-toast";
 import axios from "axios";
-import CameraIcon from "@/assets/new-logo.jpg";
-import { BACKEAND_URL } from "@/config";
+import CameraIcon from "@/assets/logo_without_backgr.png";
+import { BACKEAND_URL, IS_USE_MOCK } from "@/config";
 import { Upload, ClipboardList } from "lucide-react";
 
-//TODO: delete
-const MOCK_RESULTS = [
-  {
-    file_name: "20250422_233246.mp4",
-    violence_score: 0.9,
-  },
-  {
-    file_name: "20250425_145458.mp4",
-    violence_score: 0.15,
-  },
-  {
-    file_name: "VID-20250417-WA0025.mp4",
-    violence_score: 0.55,
-  },
-];
 const backEndInstance = axios.create({
   baseURL: BACKEAND_URL,
 });
@@ -38,13 +24,16 @@ const requestPrediction = async (selectedVideos: File[]) => {
   selectedVideos.forEach((video) => {
     formData.append("files", video);
   });
+
+  if (IS_USE_MOCK)
+    return await MockViolenceDetectionService.detectViolence(selectedVideos);
+
   const response = await backEndInstance.post("predict", formData, {
     headers: {
       "Content-Type": "multipart/form-data",
     },
   });
-  // return response.data.results;
-  return MOCK_RESULTS;
+  return response.data.results;
 };
 
 const detect = async (
@@ -53,19 +42,21 @@ const detect = async (
 ): Promise<ViolenceDetectionResult[]> => {
   const predictions = await requestPrediction(selectedVideos);
   return selectedVideos.map((_, index) => {
-    const prediction = predictions[index].violence_score;
+    const { violence_score: prediction, start_time: startTime } =
+      predictions[index];
     return {
       isViolent: prediction > 0.5,
       confidence: Math.abs(prediction - 0.5) * 2,
       previewUrl: previewUrls[index],
+      startTime,
     };
   });
 };
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState("upload");
-  const [selectedVideos, setSelectedVideos] = useState<File[] | null>(null);
-  const [previewUrls, setPreviewUrls] = useState<string[] | null>(null);
+  const [selectedVideos, setSelectedVideos] = useState<File[]>([]);
+  const [previewUrls, setPreviewUrls] = useState<string[]>([]);
   const [detectionStatus, setDetectionStatus] = useState<DetectionStatus>(
     DetectionStatus.IDLE
   );
@@ -73,14 +64,26 @@ const Index = () => {
     ViolenceDetectionResult[] | null
   >(null);
   const { toast } = useToast();
-
-  const handleVideoSelected = (file: File[]) => {
-    setSelectedVideos(file);
+  const handleVideoSelected = (files: File[]) => {
+    setSelectedVideos([...selectedVideos, ...files]);
+    const videoUrls = files.map((file) => URL.createObjectURL(file));
+    setPreviewUrls([...previewUrls, ...videoUrls]);
     setDetectionResult(null);
   };
 
+  const handleVideoRemoved = (videoIndex: number) => {
+    const newSelectedVideos = [...selectedVideos];
+    const newPreviewUrls = [...previewUrls];
+    newSelectedVideos.splice(videoIndex, 1);
+    newPreviewUrls.splice(videoIndex, 1);
+    setSelectedVideos(newSelectedVideos);
+    setPreviewUrls(newPreviewUrls);
+  };
+
+  console.log(selectedVideos);
+
   const handleCheckVideo = async () => {
-    if (!selectedVideos) {
+    if (!selectedVideos.length) {
       toast({
         variant: "destructive",
         title: "No video selected",
@@ -129,8 +132,8 @@ const Index = () => {
   };
 
   const handleReset = () => {
-    setPreviewUrls(null);
-    setSelectedVideos(null);
+    setPreviewUrls([]);
+    setSelectedVideos([]);
     setDetectionResult(null);
     setDetectionStatus(DetectionStatus.IDLE);
     setActiveTab("upload");
@@ -164,25 +167,25 @@ const Index = () => {
                 value="upload"
                 className={activeTab === "upload" ? "tab-active" : ""}
               >
+                <Upload className="h-4 w-4 mr-1" />
                 Uploading Videos for Review
-                <Upload className="h-4 w-4 ml-2" />
               </TabsTrigger>
               <TabsTrigger
                 value="results"
                 className={activeTab === "results" ? "tab-active" : ""}
                 disabled={detectionStatus !== DetectionStatus.COMPLETED}
               >
+                <ClipboardList className="h-4 w-4 mr-1" />
                 Test Results
-                <ClipboardList className="h-4 w-4 ml-2" />
               </TabsTrigger>
             </TabsList>
 
             <TabsContent value="upload">
               <VideoUploader
                 onVideoSelected={handleVideoSelected}
+                onVideoRemoved={handleVideoRemoved}
                 selectedVideos={selectedVideos}
                 previewUrls={previewUrls}
-                setPreviewUrls={setPreviewUrls}
                 isProcessing={isProcessing}
               />
 
@@ -190,7 +193,7 @@ const Index = () => {
                 <button
                   className="px-5 py-2 bg-[#233964] text-white rounded-md hover:bg-[#00142d] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                   onClick={handleCheckVideo}
-                  disabled={!selectedVideos || isProcessing}
+                  disabled={!selectedVideos.length || isProcessing}
                 >
                   Start Detection
                 </button>
@@ -198,7 +201,7 @@ const Index = () => {
                 <button
                   className="px-5 py-2 bg-white text-gray-800 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors"
                   onClick={handleReset}
-                  disabled={!selectedVideos || isProcessing}
+                  disabled={!selectedVideos.length || isProcessing}
                 >
                   Cancel
                 </button>
