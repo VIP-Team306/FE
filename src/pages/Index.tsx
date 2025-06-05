@@ -7,91 +7,14 @@ import {
   DetectionStatus,
   MockViolenceDetectionService,
   resultsToastMessages,
+  MOCK_RESULTS,
 } from "@/services/MockViolenceDetectionService"; // Correct import
 import { useToast } from "@/components/ui/use-toast";
 import axios from "axios";
 import CameraIcon from "@/assets/logo_without_backgr.png";
-import { BACKEAND_URL } from "@/config";
+import { BACKEAND_URL, IS_USE_MOCK } from "@/config";
 import { Upload, ClipboardList } from "lucide-react";
 
-//TODO: delete
-const MOCK_RESULTS = [
-  {
-    file_name: "20250422_233246.mp4",
-    violence_score: 0.9,
-    start_time: 5,
-  },
-  {
-    file_name: "20250425_145458.mp4",
-    violence_score: 0.15,
-    start_time: 3.2,
-  },
-  {
-    file_name: "VID-20250417-WA0025.mp4",
-    violence_score: 0.55,
-    start_time: 2.5,
-  },
-  {
-    file_name: "20250422_233246.mp4",
-    violence_score: 0.9,
-    start_time: 5.6,
-  },
-  {
-    file_name: "20250425_145458.mp4",
-    violence_score: 0.15,
-    start_time: 5.6,
-  },
-  {
-    file_name: "VID-20250417-WA0025.mp4",
-    violence_score: 0.55,
-    start_time: 5.6,
-  },
-  {
-    file_name: "20250422_233246.mp4",
-    violence_score: 0.9,
-    start_time: 5.6,
-  },
-  {
-    file_name: "20250425_145458.mp4",
-    violence_score: 0.15,
-    start_time: 5.6,
-  },
-  {
-    file_name: "VID-20250417-WA0025.mp4",
-    violence_score: 0.55,
-    start_time: 5.6,
-  },
-  {
-    file_name: "20250425_145458.mp4",
-    violence_score: 0.15,
-    start_time: 5.6,
-  },
-  {
-    file_name: "VID-20250417-WA0025.mp4",
-    violence_score: 0.55,
-    start_time: 5.6,
-  },
-  {
-    file_name: "20250425_145458.mp4",
-    violence_score: 0.15,
-    start_time: 5.6,
-  },
-  {
-    file_name: "VID-20250417-WA0025.mp4",
-    violence_score: 0.55,
-    start_time: 5.6,
-  },
-  {
-    file_name: "20250425_145458.mp4",
-    violence_score: 0.15,
-    start_time: 5.6,
-  },
-  {
-    file_name: "VID-20250417-WA0025.mp4",
-    violence_score: 0.55,
-    start_time: 5.6,
-  },
-];
 const backEndInstance = axios.create({
   baseURL: BACKEAND_URL,
 });
@@ -101,13 +24,16 @@ const requestPrediction = async (selectedVideos: File[]) => {
   selectedVideos.forEach((video) => {
     formData.append("files", video);
   });
+
+  if (IS_USE_MOCK)
+    return await MockViolenceDetectionService.detectViolence(selectedVideos);
+
   const response = await backEndInstance.post("predict", formData, {
     headers: {
       "Content-Type": "multipart/form-data",
     },
   });
-  // return response.data.results;
-  return MOCK_RESULTS;
+  return response.data.results;
 };
 
 const detect = async (

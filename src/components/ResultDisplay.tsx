@@ -6,6 +6,7 @@ import { CheckCircle, AlertTriangle, Loader2 } from "lucide-react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
+import { IS_USE_MOCK } from "@/config";
 
 interface ResultDisplayProps {
   results: ViolenceDetectionResults[] | null;
@@ -116,6 +117,7 @@ const ResultDisplay = ({ results, isLoading, onReset }: ResultDisplayProps) => {
 
                 <p className="text-gray-600 mb-2">
                   Confidence level: {Math.round(result.confidence * 100)}%
+                  {IS_USE_MOCK && "-Mock"}
                 </p>
                 {result.isViolent && (
                   <p className="text-gray-600 mb-2">
