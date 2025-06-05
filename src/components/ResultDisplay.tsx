@@ -16,7 +16,7 @@ interface ResultDisplayProps {
 
 const ResultDisplay = ({ results, isLoading, onReset }: ResultDisplayProps) => {
   const [showViolent, setShowViolent] = useState(false);
-  const [showDescription, setShowDescription] = useState(true);
+  const [showDescription, setShowDescription] = useState(false);
 
   if (isLoading) {
     return (
