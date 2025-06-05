@@ -16,6 +16,7 @@ interface ResultDisplayProps {
 
 const ResultDisplay = ({ results, isLoading, onReset }: ResultDisplayProps) => {
   const [showViolent, setShowViolent] = useState(false);
+  const [showDescription, setShowDescription] = useState(true);
 
   if (isLoading) {
     return (
@@ -49,29 +50,55 @@ const ResultDisplay = ({ results, isLoading, onReset }: ResultDisplayProps) => {
       variants={variants}
       className={`px-6 py-0 rounded-md shadow-sm flex flex-col items-center text-center `}
     >
-      <div className="flex flex-row items-center self-start">
-        <button
-          onClick={() => setShowViolent(!showViolent)}
-          className={`relative inline-flex h-6 w-11 mr-3 items-center rounded-full transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 ${
-            showViolent
-              ? "bg-red-600 focus:ring-red-500"
-              : "bg-gray-300 focus:ring-[#233964]"
-          }`}
-        >
-          <span
-            className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform duration-200 ${
-              showViolent ? "translate-x-6" : "translate-x-1"
+      <div className="flex flex-row items-center self-start gap-6">
+        <div className="flex flex-row items-center">
+          <button
+            onClick={() => setShowViolent(!showViolent)}
+            className={`relative inline-flex h-6 w-11 mr-2 items-center rounded-full transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 ${
+              showViolent
+                ? "bg-red-600 focus:ring-red-500"
+                : "bg-gray-300 focus:ring-red-500"
             }`}
-          />
-        </button>
+          >
+            <span
+              className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform duration-200 ${
+                showViolent ? "translate-x-6" : "translate-x-1"
+              }`}
+            />
+          </button>
 
-        <span
-          className={`text-sm font-semibold ${
-            showViolent ? "text-red-600" : "text-gray-600"
-          }`}
-        >
-          {"Show Only Violent Videos"}
-        </span>
+          <span
+            className={`text-sm font-semibold ${
+              showViolent ? "text-red-600" : "text-gray-600"
+            }`}
+          >
+            {"Show Only Violent Videos"}
+          </span>
+        </div>
+        <div className="flex flex-row items-center">
+          <button
+            onClick={() => setShowDescription(!showDescription)}
+            className={`relative inline-flex h-6 w-11 mr-2 items-center rounded-full transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 ${
+              showDescription
+                ? "bg-[#233964] focus:ring-[#233964]"
+                : "bg-gray-300 focus:ring-[#233964]"
+            }`}
+          >
+            <span
+              className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform duration-200 ${
+                showDescription ? "translate-x-6" : "translate-x-1"
+              }`}
+            />
+          </button>
+
+          <span
+            className={`text-sm font-semibold ${
+              showDescription ? "text-[#233964]" : "text-gray-600"
+            }`}
+          >
+            {"Show Violance Description"}
+          </span>
+        </div>
       </div>
       <div className="max-h-[50vh] overflow-y-auto w-[100%] my-5">
         {results
@@ -125,7 +152,7 @@ const ResultDisplay = ({ results, isLoading, onReset }: ResultDisplayProps) => {
                       <p className="text-gray-600 mb-2">
                         Violance start-time: {startTime} seconds
                       </p>
-                      {description && (
+                      {description && showDescription && (
                         <p className="text-gray-600 mb-2">
                           Violance description: {description}
                         </p>
