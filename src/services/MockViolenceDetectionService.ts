@@ -3,6 +3,7 @@ export interface ViolenceDetectionResult {
   confidence: number;
   previewUrl: string;
   startTime: number;
+  description?: string;
 }
 
 export const resultsToastMessages = {
@@ -23,8 +24,15 @@ export enum DetectionStatus {
   ERROR = "error",
 }
 
+export type BackendResponse = {
+  file_name: string;
+  violence_score: number;
+  start_time: number;
+  description?: string;
+};
+
 export const MockViolenceDetectionService = {
-  async detectViolence(videoFiles: File[]) {
+  async detectViolence(videoFiles: File[]): Promise<BackendResponse[]> {
     const processingTime = 2000 + Math.random() * 2000;
 
     return new Promise((resolve) => {
@@ -32,7 +40,9 @@ export const MockViolenceDetectionService = {
         const results = videoFiles.map((file) => ({
           file_name: `${file.name}-Mock`,
           violence_score: Math.random(),
-          start_time: `${Math.random() * 10}`.slice(0, 4),
+          start_time: Number(`${Math.random() * 10}`.slice(0, 4)),
+          description:
+            "description description description description description",
         }));
 
         resolve(results);
@@ -41,7 +51,7 @@ export const MockViolenceDetectionService = {
   },
 };
 
-export const MOCK_RESULTS = [
+export const MOCK_RESULTS: BackendResponse[] = [
   {
     file_name: "20250422_233246.mp4",
     violence_score: 0.9,
