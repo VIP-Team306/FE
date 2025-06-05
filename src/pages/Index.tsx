@@ -8,6 +8,7 @@ import {
   MockViolenceDetectionService,
   resultsToastMessages,
   MOCK_RESULTS,
+  BackendResponse,
 } from "@/services/MockViolenceDetectionService"; // Correct import
 import { useToast } from "@/components/ui/use-toast";
 import axios from "axios";
@@ -19,7 +20,9 @@ const backEndInstance = axios.create({
   baseURL: BACKEAND_URL,
 });
 
-const requestPrediction = async (selectedVideos: File[]) => {
+const requestPrediction = async (
+  selectedVideos: File[]
+): Promise<BackendResponse[]> => {
   const formData = new FormData();
   selectedVideos.forEach((video) => {
     formData.append("files", video);
@@ -42,13 +45,17 @@ const detect = async (
 ): Promise<ViolenceDetectionResult[]> => {
   const predictions = await requestPrediction(selectedVideos);
   return selectedVideos.map((_, index) => {
-    const { violence_score: prediction, start_time: startTime } =
-      predictions[index];
+    const {
+      violence_score: prediction,
+      start_time: startTime,
+      description,
+    } = predictions[index];
     return {
       isViolent: prediction > 0.5,
       confidence: Math.abs(prediction - 0.5) * 2,
       previewUrl: previewUrls[index],
       startTime,
+      description,
     };
   });
 };
@@ -79,8 +86,6 @@ const Index = () => {
     setSelectedVideos(newSelectedVideos);
     setPreviewUrls(newPreviewUrls);
   };
-
-  console.log(selectedVideos);
 
   const handleCheckVideo = async () => {
     if (!selectedVideos.length) {

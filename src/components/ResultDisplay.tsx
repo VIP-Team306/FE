@@ -16,6 +16,7 @@ interface ResultDisplayProps {
 
 const ResultDisplay = ({ results, isLoading, onReset }: ResultDisplayProps) => {
   const [showViolent, setShowViolent] = useState(false);
+  const [showDescription, setShowDescription] = useState(false);
 
   if (isLoading) {
     return (
@@ -49,93 +50,128 @@ const ResultDisplay = ({ results, isLoading, onReset }: ResultDisplayProps) => {
       variants={variants}
       className={`px-6 py-0 rounded-md shadow-sm flex flex-col items-center text-center `}
     >
-      <div className="flex flex-row items-center self-start">
-        <button
-          onClick={() => setShowViolent(!showViolent)}
-          className={`relative inline-flex h-6 w-11 mr-3 items-center rounded-full transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 ${
-            showViolent
-              ? "bg-red-600 focus:ring-red-500"
-              : "bg-gray-300 focus:ring-[#233964]"
-          }`}
-        >
-          <span
-            className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform duration-200 ${
-              showViolent ? "translate-x-6" : "translate-x-1"
+      <div className="flex flex-row items-center self-start gap-6">
+        <div className="flex flex-row items-center">
+          <button
+            onClick={() => setShowViolent(!showViolent)}
+            className={`relative inline-flex h-6 w-11 mr-2 items-center rounded-full transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 ${
+              showViolent
+                ? "bg-red-600 focus:ring-red-500"
+                : "bg-gray-300 focus:ring-red-500"
             }`}
-          />
-        </button>
+          >
+            <span
+              className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform duration-200 ${
+                showViolent ? "translate-x-6" : "translate-x-1"
+              }`}
+            />
+          </button>
 
-        <span
-          className={`text-sm font-semibold ${
-            showViolent ? "text-red-600" : "text-gray-600"
-          }`}
-        >
-          {"Show Only Violent Videos"}
-        </span>
+          <span
+            className={`text-sm font-semibold ${
+              showViolent ? "text-red-600" : "text-gray-600"
+            }`}
+          >
+            {"Show Only Violent Videos"}
+          </span>
+        </div>
+        <div className="flex flex-row items-center">
+          <button
+            onClick={() => setShowDescription(!showDescription)}
+            className={`relative inline-flex h-6 w-11 mr-2 items-center rounded-full transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 ${
+              showDescription
+                ? "bg-[#233964] focus:ring-[#233964]"
+                : "bg-gray-300 focus:ring-[#233964]"
+            }`}
+          >
+            <span
+              className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform duration-200 ${
+                showDescription ? "translate-x-6" : "translate-x-1"
+              }`}
+            />
+          </button>
+
+          <span
+            className={`text-sm font-semibold ${
+              showDescription ? "text-[#233964]" : "text-gray-600"
+            }`}
+          >
+            {"Show Violance Description"}
+          </span>
+        </div>
       </div>
       <div className="max-h-[50vh] overflow-y-auto w-[100%] my-5">
         {results
           .filter((result) => !showViolent || result.isViolent)
-          .map((result) => (
-            <div
-              dir="ltr"
-              className={`grid grid-cols-[20%_60%_20%] gap-4 pt-5 my-4 w-[99%]
+          .map(
+            ({ confidence, isViolent, previewUrl, startTime, description }) => (
+              <div
+                dir="ltr"
+                className={`grid grid-cols-[20%_60%_20%] gap-4 pt-5 my-4 w-[99%]
           ${
-            result.isViolent
+            isViolent
               ? "bg-red-50 border border-red-200"
               : "bg-green-50 border border-green-200"
           }
         }`}
-            >
-              <div className="max-h-[180px] max-w-[180px] flex justify-center items-center">
-                <video
-                  src={result.previewUrl || undefined}
-                  controls
-                  className="h-[90%]"
-                />
-              </div>
-              <div className={`flex flex-col items-center text-center`}>
-                {result.isViolent ? (
-                  <div className="mb-4 p-3 bg-red-100 rounded-full">
-                    <AlertTriangle className="h-10 w-10 text-red-500" />
-                  </div>
-                ) : (
-                  <div className="mb-4 p-3 bg-green-100 rounded-full">
-                    <CheckCircle className="h-10 w-10 text-green-500" />
-                  </div>
-                )}
+              >
+                <div className="max-h-[180px] max-w-[180px] flex justify-center items-center">
+                  <video
+                    src={previewUrl || undefined}
+                    controls
+                    className="h-[90%]"
+                  />
+                </div>
+                <div className={`flex flex-col items-center text-center`}>
+                  {isViolent ? (
+                    <div className="mb-4 p-3 bg-red-100 rounded-full">
+                      <AlertTriangle className="h-10 w-10 text-red-500" />
+                    </div>
+                  ) : (
+                    <div className="mb-4 p-3 bg-green-100 rounded-full">
+                      <CheckCircle className="h-10 w-10 text-green-500" />
+                    </div>
+                  )}
 
-                <h3
-                  className={`text-xl font-bold mb-2 ${
-                    result.isViolent ? "text-red-700" : "text-green-700"
-                  }`}
-                >
-                  {result.isViolent
-                    ? resultMessages.violent
-                    : resultMessages.unviolent}
-                </h3>
-
-                <p className="text-gray-600 mb-2">
-                  Confidence level: {Math.round(result.confidence * 100)}%
-                  {IS_USE_MOCK && "-Mock"}
-                </p>
-                {result.isViolent && (
-                  <p className="text-gray-600 mb-2">
-                    Violance start-time: {result.startTime} seconds
-                  </p>
-                )}
-
-                <div className="w-full max-w-md bg-gray-200 rounded-full h-2.5 mb-6">
-                  <div
-                    className={`h-2.5 rounded-full ${
-                      result.isViolent ? "bg-red-500" : "bg-green-500"
+                  <h3
+                    className={`text-xl font-bold mb-2 ${
+                      isViolent ? "text-red-700" : "text-green-700"
                     }`}
-                    style={{ width: `${result.confidence * 100}%` }}
-                  ></div>
+                  >
+                    {isViolent
+                      ? resultMessages.violent
+                      : resultMessages.unviolent}
+                  </h3>
+
+                  <p className="text-gray-600 mb-2">
+                    Confidence level: {Math.round(confidence * 100)}%
+                    {IS_USE_MOCK && "-Mock"}
+                  </p>
+                  {isViolent && (
+                    <>
+                      <p className="text-gray-600 mb-2">
+                        Violance start-time: {startTime} seconds
+                      </p>
+                      {description && showDescription && (
+                        <p className="text-gray-600 mb-2">
+                          Violance description: {description}
+                        </p>
+                      )}
+                    </>
+                  )}
+
+                  <div className="w-full max-w-md bg-gray-200 rounded-full h-2.5 mb-6">
+                    <div
+                      className={`h-2.5 rounded-full ${
+                        isViolent ? "bg-red-500" : "bg-green-500"
+                      }`}
+                      style={{ width: `${confidence * 100}%` }}
+                    ></div>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            )
+          )}
       </div>
       <Button onClick={onReset} variant="outline" className="my-2">
         Start Over With More Videos
