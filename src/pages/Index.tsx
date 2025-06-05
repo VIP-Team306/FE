@@ -66,8 +66,21 @@ const Index = () => {
   const { toast } = useToast();
   const handleVideoSelected = (files: File[]) => {
     setSelectedVideos([...selectedVideos, ...files]);
+    const videoUrls = files.map((file) => URL.createObjectURL(file));
+    setPreviewUrls([...previewUrls, ...videoUrls]);
     setDetectionResult(null);
   };
+
+  const handleVideoRemoved = (videoIndex: number) => {
+    const newSelectedVideos = [...selectedVideos];
+    const newPreviewUrls = [...previewUrls];
+    newSelectedVideos.splice(videoIndex, 1);
+    newPreviewUrls.splice(videoIndex, 1);
+    setSelectedVideos(newSelectedVideos);
+    setPreviewUrls(newPreviewUrls);
+  };
+
+  console.log(selectedVideos);
 
   const handleCheckVideo = async () => {
     if (!selectedVideos.length) {
@@ -170,9 +183,9 @@ const Index = () => {
             <TabsContent value="upload">
               <VideoUploader
                 onVideoSelected={handleVideoSelected}
+                onVideoRemoved={handleVideoRemoved}
                 selectedVideos={selectedVideos}
                 previewUrls={previewUrls}
-                setPreviewUrls={setPreviewUrls}
                 isProcessing={isProcessing}
               />
 

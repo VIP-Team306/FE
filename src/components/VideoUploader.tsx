@@ -6,10 +6,10 @@ import { MockViolenceDetectionService } from "@/services/MockViolenceDetectionSe
 
 interface VideoUploaderProps {
   onVideoSelected: (files: File[]) => void;
+  onVideoRemoved: (videoIndex: number) => void;
   isProcessing: boolean;
   selectedVideos: File[];
   previewUrls: string[];
-  setPreviewUrls: (value: string[]) => void;
 }
 
 const MAX_FILE_SIZE = 1024 * 1024 * 1024; // 1GB
@@ -22,10 +22,10 @@ const ACCEPTED_VIDEO_TYPES = [
 
 const VideoUploader = ({
   onVideoSelected,
+  onVideoRemoved,
   isProcessing,
   previewUrls,
   selectedVideos,
-  setPreviewUrls,
 }: VideoUploaderProps) => {
   const [dragActive, setDragActive] = useState(false);
 
@@ -67,11 +67,7 @@ const VideoUploader = ({
     files.forEach((file) => {
       if (!validateFile(file)) return;
     });
-
     onVideoSelected(files);
-
-    const videoUrls = files.map((file) => URL.createObjectURL(file));
-    setPreviewUrls([...previewUrls, ...videoUrls]);
   };
 
   const handleDrop = (e: DragEvent<HTMLDivElement>) => {
@@ -96,12 +92,7 @@ const VideoUploader = ({
   };
 
   const removeSelectedVideo = (videoIndex: number) => {
-    const newSelectedVideos = [...selectedVideos];
-    const newPreviewUrls = [...previewUrls];
-    newSelectedVideos.splice(videoIndex, 1);
-    newPreviewUrls.splice(videoIndex, 1);
-    onVideoSelected(newSelectedVideos);
-    setPreviewUrls(newPreviewUrls);
+    onVideoRemoved(videoIndex);
     if (fileInputRef.current && !selectedVideos.length)
       fileInputRef.current.value = "";
   };
